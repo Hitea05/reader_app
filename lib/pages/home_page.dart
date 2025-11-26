@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:reader_app/models/book.dart';
 import 'package:reader_app/network/network.dart';
 
+import 'package:reader_app/widgets/grid_view_widget.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -49,47 +51,10 @@ class _HomePageState extends State<HomePage> {
               onSubmitted: (query) => _searchBooks(query),
             ),
           ),
-          Expanded(
-            child: GridView.builder(
-              shrinkWrap: true,
-              itemCount: _books.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 5,
-                crossAxisSpacing: 5,
-                childAspectRatio: 0.6,
-              ),
-              itemBuilder: (context, index) {
-                Book book = _books[index];
-                return Container(
-                  padding: EdgeInsets.all(5),
-                  margin: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: colortheme.onInverseSurface,
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.network(
-                            book.imageLinks['thumbnail'] ?? '',
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(book.title, style: textTheme.displayMedium),
-                        SizedBox(height: 10),
-                        Text(
-                          book.authors.join(' , '),
-                          style: textTheme.displaySmall,
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+          GridViewWidget(
+            books: _books,
+            colortheme: colortheme,
+            textTheme: textTheme,
           ),
           //   child: Container(
           //     padding: EdgeInsets.all(5),

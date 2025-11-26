@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:reader_app/models/book.dart';
-import 'package:reader_app/network/network.dart';
+import 'package:reader_app/pages/book_detail_screen.dart';
 import 'package:reader_app/pages/favorite_page.dart';
 import 'package:reader_app/pages/home_page.dart';
 import 'package:reader_app/pages/saved_page.dart';
@@ -27,6 +26,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Reader App',
+      initialRoute: '/',
+      routes: {
+        '/home': (context) => HomePage(),
+        '/saved': (context) => SavedPage(),
+        '/favorite': (context) => FavoritePage(),
+        '/details': (context) => BookDetailScreen(),
+      },
       theme: themeprovider.currentTheme,
       home: const MyHome(),
     );
