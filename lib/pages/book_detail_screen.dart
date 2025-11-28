@@ -103,6 +103,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                 margin: EdgeInsets.all(20),
                 padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
                   color: themecolor.onSecondary,
                   border: Border.all(width: 2, color: themecolor.secondary),
                 ),
