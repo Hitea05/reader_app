@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Book {
   final String id;
   final String title;
@@ -67,5 +69,62 @@ class Book {
   String toString() {
     // TODO: implement toString
     return "Books : ${this.title}";
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      // Store Lists as comma-separated Strings (standard SQLite practice)
+      'authors': authors.join(','),
+      'publisher': publisher,
+      'publishedDate': publishedDate,
+      // Store boolean as integer (0 or 1)
+      // 'isFavorite': isFavorite ? 1 : 0,
+      'description': description,
+      // Convert complex Maps to JSON string (requires dart:convert)
+      'industryIndentifiers': jsonEncode(industryIndentifiers),
+      'pageCount': pageCount,
+      'categories': categories.join(','),
+      'previewLink': previewLink,
+      'infoLink': infoLink,
+      'language': language,
+      'imageLinks': jsonEncode(imageLinks),
+      'subtitle': subtitle,
+    };
+  }
+
+  // 2. Create Book object from a Map (for SELECT/reading from DB)
+  factory Book.fromJsonDatabase(Map<String, dynamic> jsonObject) {
+    return Book(
+      id: jsonObject['id'] ?? '',
+      title: jsonObject['title'] ?? '',
+      // Convert comma-separated String back to List
+      authors: (jsonObject['authors'] as String? ?? '')
+          .split(',')
+          .where((s) => s.isNotEmpty)
+          .toList(),
+      publisher: jsonObject['publisher'] ?? '',
+      publishedDate: jsonObject['publishedDate'] ?? '',
+      // Convert integer (0 or 1) back to boolean
+      // isFavorite: jsonObject['isFavorite'] == 1,
+      description: jsonObject['description'] ?? '',
+      // Decode JSON string back to Map (requires dart:convert)
+      industryIndentifiers: Map<String, String>.from(
+        jsonDecode(jsonObject['industryIndentifiers'] ?? '{}'),
+      ),
+      pageCount: jsonObject['pageCount'] ?? 0,
+      categories: (jsonObject['categories'] as String? ?? '')
+          .split(',')
+          .where((s) => s.isNotEmpty)
+          .toList(),
+      previewLink: jsonObject['previewLink'] ?? '',
+      infoLink: jsonObject['infoLink'] ?? '',
+      language: jsonObject['language'] ?? '',
+      imageLinks: Map<String, String>.from(
+        jsonDecode(jsonObject['imageLinks'] ?? '{}'),
+      ),
+      subtitle: jsonObject['subtitle'] ?? '',
+    );
   }
 }
