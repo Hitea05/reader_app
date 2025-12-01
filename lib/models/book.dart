@@ -8,7 +8,7 @@ class Book {
   final String publishedDate;
   final bool isFavorite;
   final String description;
-  final Map<String, String> industryIndentifiers;
+  final Map<String, String> industryIdentifiers;
   final int pageCount;
   final List<String> categories;
   final String previewLink;
@@ -25,7 +25,7 @@ class Book {
     required this.publishedDate,
     this.isFavorite = false,
     required this.description,
-    required this.industryIndentifiers,
+    required this.industryIdentifiers,
     required this.pageCount,
     required this.categories,
     required this.previewLink,
@@ -46,7 +46,7 @@ class Book {
       publisher: volumeInfo['publisher'] ?? '',
       publishedDate: volumeInfo['publishedDate'] ?? '',
       description: volumeInfo['description'] ?? '',
-      industryIndentifiers: {
+      industryIdentifiers: {
         for (var item
             in volumeInfo['industryIdentifiers'] as List<dynamic>? ?? [])
           item['type'] as String? ?? '': item['identifier'] as String? ?? '',
@@ -83,7 +83,7 @@ class Book {
       // 'isFavorite': isFavorite ? 1 : 0,
       'description': description,
       // Convert complex Maps to JSON string (requires dart:convert)
-      'industryIndentifiers': jsonEncode(industryIndentifiers),
+      'industryIdentifiers': jsonEncode(industryIdentifiers),
       'pageCount': pageCount,
       'categories': categories.join(','),
       'previewLink': previewLink,
@@ -110,7 +110,7 @@ class Book {
       // isFavorite: jsonObject['isFavorite'] == 1,
       description: jsonObject['description'] ?? '',
       // Decode JSON string back to Map (requires dart:convert)
-      industryIndentifiers: Map<String, String>.from(
+      industryIdentifiers: Map<String, String>.from(
         jsonDecode(jsonObject['industryIndentifiers'] ?? '{}'),
       ),
       pageCount: jsonObject['pageCount'] ?? 0,

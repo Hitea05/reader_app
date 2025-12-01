@@ -36,7 +36,8 @@ class DatabaseHelper {
     publishedDate TEXT,
     description TEXT,
     industryIdentifiers TEXT,
-    pageCOunt INTEGER,
+    pageCount INTEGER,
+    categories TEXT,
     language TEXT,
     imageLinks TEXT,
     previewLink TEXT,
@@ -48,7 +49,11 @@ class DatabaseHelper {
 
   Future<int> insert(Book book) async {
     Database db = await instance.database;
-    return await db.insert(_tableName, book.toJson());
+    return await db.insert(
+      _tableName,
+      book.toJson(),
+      conflictAlgorithm: .replace,
+    );
   }
 
   Future<List<Book>> readAllBook() async {
