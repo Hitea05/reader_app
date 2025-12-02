@@ -80,7 +80,7 @@ class Book {
       'publisher': publisher,
       'publishedDate': publishedDate,
       // Store boolean as integer (0 or 1)
-      // 'isFavorite': isFavorite ? 1 : 0,
+      'isFavorite': isFavorite ? 1 : 0,
       'description': description,
       // Convert complex Maps to JSON string (requires dart:convert)
       'industryIdentifiers': jsonEncode(industryIdentifiers),

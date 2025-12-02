@@ -42,7 +42,8 @@ class DatabaseHelper {
     imageLinks TEXT,
     previewLink TEXT,
     infoLink TEXT,
-    subtitle TEXT
+    subtitle TEXT,
+    isFavorite INTEGER DEFAULT 0
     )
     ''');
   }
@@ -62,5 +63,22 @@ class DatabaseHelper {
     return books.isNotEmpty
         ? books.map((bookdata) => Book.fromJsonDatabase(bookdata)).toList()
         : [];
+  }
+
+  Future<int> toggleFavoriteStatus(String id, bool isFavorite) async {
+    Database db = await instance.database;
+
+    return await db.update(
+      _tableName,
+      {'isFavorite': isFavorite ? 1 : 0},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> deleteBook(String id) async {
+    Database db = await instance.database;
+
+    return await db.delete(_tableName, where: 'id = ?', whereArgs: [id]);
   }
 }

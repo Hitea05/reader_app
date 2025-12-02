@@ -207,17 +207,12 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                         label: Text('Save'),
                       ),
                       ElevatedButton.icon(
-                        icon: Icon(Icons.favorite),
+                        icon: Icon(Icons.favorite_border_rounded),
                         onPressed: () async {
-                          try {
-                            await DatabaseHelper.instance.readAllBook().then(
-                              (books) => {
-                                for (var book in books) {print(book.title)},
-                              },
-                            );
-                          } catch (e) {
-                            print(e);
-                          }
+                          await DatabaseHelper.instance.toggleFavoriteStatus(
+                            book.id,
+                            book.isFavorite,
+                          );
                         },
                         label: Text('Favorite'),
                       ),

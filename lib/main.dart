@@ -51,8 +51,8 @@ class _MyHomeState extends State<MyHome> {
 
   final List<Widget> _screen = [
     const HomePage(),
-    const FavoritePage(),
     const SavedPage(),
+    const FavoritePage(),
   ];
 
   @override
