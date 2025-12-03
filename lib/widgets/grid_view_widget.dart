@@ -37,7 +37,10 @@ class GridViewWidget extends StatelessWidget {
                 Navigator.pushNamed(
                   context,
                   '/details',
-                  arguments: BookDetailsArguments(itemsbook: book),
+                  arguments: BookDetailsArguments(
+                    itemsbook: book,
+                    isFromSavedScreen: false,
+                  ),
                 );
                 // Navigator.push(
                 //   context,

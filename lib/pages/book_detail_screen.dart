@@ -18,6 +18,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
     final args =
         ModalRoute.of(context)?.settings.arguments as BookDetailsArguments;
     final Book book = args.itemsbook;
+    final bool isFromSavedScreen = args.isFromSavedScreen;
     final themeProvider = Provider.of<ThemeProviderModel>(context);
 
     final List<String> imageUrl = book.imageLinks.values.toList();
@@ -184,40 +185,56 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                   ),
 
                   SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: .spaceEvenly,
-                    children: [
-                      ElevatedButton.icon(
-                        icon: Icon(Icons.save),
-                        onPressed: () async {
-                          try {
-                            int savedInt = await DatabaseHelper.instance.insert(
-                              book,
-                            );
-                            SnackBar snackBar = SnackBar(
-                              content: Text("Book Saved $savedInt"),
-                            );
-                            ScaffoldMessenger.of(
-                              context,
-                            ).showSnackBar(snackBar);
-                          } catch (e) {
-                            print('Error Saving Book');
-                          }
-                        },
-                        label: Text('Save'),
-                      ),
-                      ElevatedButton.icon(
-                        icon: Icon(Icons.favorite_border_rounded),
-                        onPressed: () async {
-                          await DatabaseHelper.instance.toggleFavoriteStatus(
-                            book.id,
-                            book.isFavorite,
-                          );
-                        },
-                        label: Text('Favorite'),
-                      ),
-                    ],
-                  ),
+                  isFromSavedScreen
+                      ? Row(
+                          mainAxisAlignment: .center,
+                          children: [
+                            ElevatedButton.icon(
+                              icon: Icon(Icons.favorite_border_rounded),
+                              onPressed: () async {
+                                await DatabaseHelper.instance
+                                    .toggleFavoriteStatus(
+                                      book.id,
+                                      !book.isFavorite,
+                                    )
+                                    .then(
+                                      (value) => print('Book Add to Favorite'),
+                                    );
+                                SnackBar snackBar = SnackBar(
+                                  content: Text('Book added to Favorite'),
+                                );
+
+                                ScaffoldMessenger.of(
+                                  context,
+                                ).showSnackBar(snackBar);
+                              },
+                              label: Text('Favorite'),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          mainAxisAlignment: .center,
+                          children: [
+                            ElevatedButton.icon(
+                              icon: Icon(Icons.save),
+                              onPressed: () async {
+                                try {
+                                  int savedInt = await DatabaseHelper.instance
+                                      .insert(book);
+                                  SnackBar snackBar = SnackBar(
+                                    content: Text("Book Saved $savedInt"),
+                                  );
+                                  ScaffoldMessenger.of(
+                                    context,
+                                  ).showSnackBar(snackBar);
+                                } catch (e) {
+                                  print('Error Saving Book');
+                                }
+                              },
+                              label: Text('Save'),
+                            ),
+                          ],
+                        ),
                 ],
               ),
               SizedBox(height: 30),

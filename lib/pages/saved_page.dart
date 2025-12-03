@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reader_app/db/database_helper.dart';
 import 'package:reader_app/models/book.dart';
+import 'package:reader_app/utils/book_details_aurgments.dart';
 
 class SavedPage extends StatefulWidget {
   const SavedPage({super.key});
@@ -15,11 +16,6 @@ class _HomePageState extends State<SavedPage> {
     var colortheme = Theme.of(context).colorScheme;
     var textTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Saved Book', style: textTheme.displayMedium),
-        centerTitle: false,
-        backgroundColor: colortheme.surfaceContainer,
-      ),
       body: FutureBuilder<List<Book>>(
         future: DatabaseHelper.instance.readAllBook(),
         builder: (context, snapshot) {
@@ -52,54 +48,76 @@ class _HomePageState extends State<SavedPage> {
             itemBuilder: (context, index) {
               Book book = books[index];
 
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: BoxBorder.all(
-                    width: 2,
-                    color: colortheme.outlineVariant,
+              return InkWell(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/details',
+                    arguments: BookDetailsArguments(
+                      itemsbook: book,
+                      isFromSavedScreen: true,
+                    ),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: BoxBorder.all(
+                      width: 2,
+                      color: colortheme.outlineVariant,
+                    ),
+                    color: colortheme.surfaceContainerHighest,
                   ),
-                  color: colortheme.surfaceContainerHighest,
-                ),
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.all(10),
-                child: ListTile(
-                  leading: Image.network(
-                    book.imageLinks['thumbnail'] ?? '',
-                    fit: BoxFit.cover,
-                  ),
-                  title: Text(book.title, style: textTheme.displayMedium),
-                  trailing: IconButton(
-                    onPressed: () async {
-                      await DatabaseHelper.instance.deleteBook(book.id);
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
+                  child: ListTile(
+                    leading: Image.network(
+                      book.imageLinks['thumbnail'] ?? '',
+                      fit: BoxFit.cover,
+                    ),
+                    title: Text(book.title, style: textTheme.displayMedium),
+                    trailing: IconButton(
+                      onPressed: () async {
+                        await DatabaseHelper.instance.deleteBook(book.id);
 
-                      SnackBar snackBar = SnackBar(
-                        backgroundColor: colortheme.surfaceContainerHighest,
-                        content: Text(
-                          'Book Delete',
-                          style: textTheme.displaySmall,
+                        SnackBar snackBar = SnackBar(
+                          backgroundColor: colortheme.surfaceContainerHighest,
+                          content: Text(
+                            'Book Delete',
+                            style: textTheme.displaySmall,
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.delete),
+                    ),
+                    subtitle: Column(
+                      spacing: 10,
+                      children: [
+                        const SizedBox(height: 10),
+                        Text(book.authors.join(' , ')),
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            await DatabaseHelper.instance
+                                .toggleFavoriteStatus(book.id, !book.isFavorite)
+                                .then((value) => print("Book add to Favorite"));
+
+                            SnackBar snackBar = SnackBar(
+                              content: Text('Book add to Favorite'),
+                            );
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(snackBar);
+                          },
+                          label: const Text('Add to Favorites'),
+                          icon: const Icon(
+                            Icons.favorite_outline_rounded,
+                            color: Colors.red,
+                          ),
                         ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      setState(() {});
-                    },
-                    icon: const Icon(Icons.delete),
-                  ),
-                  subtitle: Column(
-                    spacing: 10,
-                    children: [
-                      const SizedBox(height: 10),
-                      Text(book.authors.join(' , ')),
-                      ElevatedButton.icon(
-                        onPressed: () async {
-                          await DatabaseHelper.instance
-                              .toggleFavoriteStatus(book.id, book.isFavorite)
-                              .then((value) => print("Book add to Favorite"));
-                        },
-                        label: const Text('Add to Favorites'),
-                        icon: const Icon(Icons.favorite_rounded),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );
