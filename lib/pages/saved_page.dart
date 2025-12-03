@@ -17,24 +17,12 @@ class _HomePageState extends State<SavedPage> {
     var textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: FutureBuilder<List<Book>>(
-        future: DatabaseHelper.instance.readAllBook(),
+        future: DatabaseHelper.instance.readAllBooks(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          // --- 2. Handle Error State ---
-          if (snapshot.hasError) {
-            print(snapshot.error); // Log the error
-            return Center(
-              child: Text('Error loading data: ${snapshot.error.toString()}'),
-            );
-          }
-
           // Ensure data is not null and is a List<Book>
           final List<Book> books = snapshot.data ?? [];
 
-          // --- 3. Handle Empty State ---
+          // ---  Handle Empty State ---
           if (books.isEmpty) {
             return Center(
               child: Text(
@@ -44,7 +32,7 @@ class _HomePageState extends State<SavedPage> {
             );
           }
           return ListView.builder(
-            itemCount: snapshot.data!.length,
+            itemCount: books.length,
             itemBuilder: (context, index) {
               Book book = books[index];
 
@@ -90,30 +78,82 @@ class _HomePageState extends State<SavedPage> {
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         setState(() {});
                       },
-                      icon: const Icon(Icons.delete),
+                      icon: Icon(Icons.delete),
                     ),
                     subtitle: Column(
                       spacing: 10,
                       children: [
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
                         Text(book.authors.join(' , ')),
                         ElevatedButton.icon(
+                          icon: Icon(
+                            book.isFavorite
+                                ? Icons.favorite_rounded
+                                : Icons.favorite_outline_rounded,
+                            color: book.isFavorite ? Colors.red : null,
+                          ),
                           onPressed: () async {
-                            await DatabaseHelper.instance
-                                .toggleFavoriteStatus(book.id, !book.isFavorite)
-                                .then((value) => print("Book add to Favorite"));
-
-                            SnackBar snackBar = SnackBar(
-                              content: Text('Book add to Favorite'),
+                            book.isFavorite = !book.isFavorite;
+                            await DatabaseHelper.instance.toggleFavoriteStatus(
+                              book.id,
+                              book.isFavorite,
                             );
-                            ScaffoldMessenger.of(
-                              context,
-                            ).showSnackBar(snackBar);
+
+                            SnackBar snackBar1 = SnackBar(
+                              content: Text(
+                                'Add to Favorite',
+                                style: textTheme.displaySmall?.copyWith(
+                                  color: colortheme.inverseSurface,
+                                ),
+                              ),
+                              backgroundColor: colortheme.inversePrimary,
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadiusGeometry.circular(20),
+                                side: BorderSide(
+                                  width: 2,
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                              margin: EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 6,
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                            );
+                            SnackBar snackBar2 = SnackBar(
+                              content: Text(
+                                'Removed from Favorite',
+                                style: textTheme.displaySmall?.copyWith(
+                                  color: colortheme.inverseSurface,
+                                ),
+                              ),
+                              backgroundColor: colortheme.inversePrimary,
+                              elevation: 5,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadiusGeometry.circular(20),
+                                side: BorderSide(
+                                  width: 2,
+                                  style: BorderStyle.solid,
+                                ),
+                              ),
+                              margin: EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 6,
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                            );
+                            book.isFavorite
+                                ? ScaffoldMessenger.of(
+                                    context,
+                                  ).showSnackBar(snackBar1)
+                                : ScaffoldMessenger.of(
+                                    context,
+                                  ).showSnackBar(snackBar2);
+                            setState(() {});
                           },
-                          label: const Text('Add to Favorites'),
-                          icon: const Icon(
-                            Icons.favorite_outline_rounded,
-                            color: Colors.red,
+                          label: Text(
+                            book.isFavorite ? 'Favorite' : 'Add to Favorite',
                           ),
                         ),
                       ],

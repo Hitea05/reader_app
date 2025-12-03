@@ -6,7 +6,7 @@ class Book {
   final List<String> authors;
   final String publisher;
   final String publishedDate;
-  final bool isFavorite;
+  bool isFavorite;
   final String description;
   final Map<String, String> industryIdentifiers;
   final int pageCount;
@@ -107,7 +107,7 @@ class Book {
       publisher: jsonObject['publisher'] ?? '',
       publishedDate: jsonObject['publishedDate'] ?? '',
       // Convert integer (0 or 1) back to boolean
-      // isFavorite: jsonObject['isFavorite'] == 1,
+      isFavorite: jsonObject['isFavorite'] == 1,
       description: jsonObject['description'] ?? '',
       // Decode JSON string back to Map (requires dart:convert)
       industryIdentifiers: Map<String, String>.from(

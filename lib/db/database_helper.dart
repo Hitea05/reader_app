@@ -57,7 +57,7 @@ class DatabaseHelper {
     );
   }
 
-  Future<List<Book>> readAllBook() async {
+  Future<List<Book>> readAllBooks() async {
     Database db = await instance.database;
     var books = await db.query(_tableName);
     return books.isNotEmpty

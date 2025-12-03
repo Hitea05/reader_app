@@ -190,25 +190,82 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                           mainAxisAlignment: .center,
                           children: [
                             ElevatedButton.icon(
-                              icon: Icon(Icons.favorite_border_rounded),
+                              icon: Icon(
+                                book.isFavorite
+                                    ? Icons.favorite_rounded
+                                    : Icons.favorite_outline_rounded,
+                                color: book.isFavorite ? Colors.red : null,
+                              ),
                               onPressed: () async {
+                                book.isFavorite = !book.isFavorite;
                                 await DatabaseHelper.instance
                                     .toggleFavoriteStatus(
                                       book.id,
-                                      !book.isFavorite,
-                                    )
-                                    .then(
-                                      (value) => print('Book Add to Favorite'),
+                                      book.isFavorite,
                                     );
-                                SnackBar snackBar = SnackBar(
-                                  content: Text('Book added to Favorite'),
-                                );
 
-                                ScaffoldMessenger.of(
-                                  context,
-                                ).showSnackBar(snackBar);
+                                SnackBar snackBar1 = SnackBar(
+                                  content: Text(
+                                    'Add to Favorite',
+                                    style: textTheme.displaySmall?.copyWith(
+                                      color: themecolor.inverseSurface,
+                                    ),
+                                  ),
+                                  backgroundColor: themecolor.inversePrimary,
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadiusGeometry.circular(
+                                      20,
+                                    ),
+                                    side: BorderSide(
+                                      width: 2,
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: 6,
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                );
+                                SnackBar snackBar2 = SnackBar(
+                                  content: Text(
+                                    'Removed from Favorite',
+                                    style: textTheme.displaySmall?.copyWith(
+                                      color: themecolor.inverseSurface,
+                                    ),
+                                  ),
+                                  backgroundColor: themecolor.inversePrimary,
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadiusGeometry.circular(
+                                      20,
+                                    ),
+                                    side: BorderSide(
+                                      width: 2,
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+                                  margin: EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: 6,
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                );
+                                book.isFavorite
+                                    ? ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(snackBar1)
+                                    : ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(snackBar2);
+                                setState(() {});
                               },
-                              label: Text('Favorite'),
+                              label: Text(
+                                book.isFavorite
+                                    ? 'Favorite'
+                                    : 'Add to Favorite',
+                              ),
                             ),
                           ],
                         )

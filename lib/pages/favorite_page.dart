@@ -63,6 +63,7 @@ class _HomePageState extends State<FavoritePage> {
                             ),
                             trailing: IconButton(
                               onPressed: () async {
+                                book.isFavorite = !book.isFavorite;
                                 await DatabaseHelper.instance
                                     .toggleFavoriteStatus(
                                       book.id,
