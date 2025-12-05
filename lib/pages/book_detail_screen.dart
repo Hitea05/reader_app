@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:reader_app/db/database_helper.dart';
 import 'package:reader_app/models/book.dart';
-import 'package:reader_app/provider/theme_provider.dart';
 import 'package:reader_app/utils/book_details_aurgments.dart';
-import 'package:provider/provider.dart';
+import 'package:reader_app/widgets/theme_button.dart';
 
 class BookDetailScreen extends StatefulWidget {
   const BookDetailScreen({super.key});
@@ -19,7 +18,6 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
         ModalRoute.of(context)?.settings.arguments as BookDetailsArguments;
     final Book book = args.itemsbook;
     final bool isFromSavedScreen = args.isFromSavedScreen;
-    final themeProvider = Provider.of<ThemeProviderModel>(context);
 
     final List<String> imageUrl = book.imageLinks.values.toList();
 
@@ -30,16 +28,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
         backgroundColor: themecolor.inversePrimary,
         title: Text(book.title, style: textTheme.displayMedium),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: themeProvider.toggleTheme,
-            icon: Icon(
-              themeProvider.isDarkMode
-                  ? Icons.wb_sunny_outlined
-                  : Icons.nightlight_outlined,
-            ),
-          ),
-        ],
+        actions: [ThemeWidget()],
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -203,50 +192,54 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                                       book.id,
                                       book.isFavorite,
                                     );
+                                final double snackBarwidth =
+                                    MediaQuery.of(context).size.width * 0.6;
 
                                 SnackBar snackBar1 = SnackBar(
-                                  content: Text(
-                                    'Add to Favorite',
-                                    style: textTheme.displaySmall?.copyWith(
-                                      color: themecolor.inverseSurface,
+                                  content: SizedBox(
+                                    width: snackBarwidth,
+                                    child: Text(
+                                      'Add to Favorite',
+                                      style: textTheme.displaySmall?.copyWith(
+                                        color: themecolor.inverseSurface,
+                                      ),
                                     ),
                                   ),
                                   backgroundColor: themecolor.inversePrimary,
                                   elevation: 5,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadiusGeometry.circular(
-                                      20,
-                                    ),
+                                    borderRadius: BorderRadius.circular(20),
                                     side: BorderSide(
                                       width: 2,
                                       style: BorderStyle.solid,
                                     ),
                                   ),
-                                  margin: EdgeInsets.symmetric(
+                                  margin: const EdgeInsets.symmetric(
                                     vertical: 10,
                                     horizontal: 6,
                                   ),
                                   behavior: SnackBarBehavior.floating,
                                 );
                                 SnackBar snackBar2 = SnackBar(
-                                  content: Text(
-                                    'Removed from Favorite',
-                                    style: textTheme.displaySmall?.copyWith(
-                                      color: themecolor.inverseSurface,
+                                  content: SizedBox(
+                                    width: snackBarwidth,
+                                    child: Text(
+                                      'Removed from Favorite',
+                                      style: textTheme.displaySmall?.copyWith(
+                                        color: themecolor.inverseSurface,
+                                      ),
                                     ),
                                   ),
                                   backgroundColor: themecolor.inversePrimary,
                                   elevation: 5,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadiusGeometry.circular(
-                                      20,
-                                    ),
+                                    borderRadius: BorderRadius.circular(20),
                                     side: BorderSide(
                                       width: 2,
                                       style: BorderStyle.solid,
                                     ),
                                   ),
-                                  margin: EdgeInsets.symmetric(
+                                  margin: const EdgeInsets.symmetric(
                                     vertical: 10,
                                     horizontal: 6,
                                   ),

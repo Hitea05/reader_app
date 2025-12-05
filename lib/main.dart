@@ -57,13 +57,11 @@ class _MyHomeState extends State<MyHome> {
 
   @override
   Widget build(BuildContext context) {
-    final themeprovider = Provider.of<ThemeProviderModel>(context);
-
     var text = Theme.of(context).textTheme;
     var themeModel = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
-        actions: [ThemeWidget(themeprovider: themeprovider)],
+        actions: [ThemeWidget()],
         backgroundColor: themeModel.inversePrimary,
         title: Text('Reader App', style: text.titleMedium),
         centerTitle: true,

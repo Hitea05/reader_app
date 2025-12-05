@@ -37,8 +37,8 @@ class _HomePageState extends State<SavedPage> {
               Book book = books[index];
 
               return InkWell(
-                onTap: () {
-                  Navigator.pushNamed(
+                onTap: () async {
+                  await Navigator.pushNamed(
                     context,
                     '/details',
                     arguments: BookDetailsArguments(
@@ -46,6 +46,7 @@ class _HomePageState extends State<SavedPage> {
                       isFromSavedScreen: true,
                     ),
                   );
+                  setState(() {});
                 },
                 child: Container(
                   decoration: BoxDecoration(
