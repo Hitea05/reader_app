@@ -192,59 +192,62 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                                       book.id,
                                       book.isFavorite,
                                     );
-                                final double snackBarwidth =
-                                    MediaQuery.of(context).size.width * 0.6;
 
                                 SnackBar snackBar1 = SnackBar(
-                                  content: SizedBox(
-                                    width: snackBarwidth,
+                                  content: Center(
                                     child: Text(
                                       'Add to Favorite',
                                       style: textTheme.displaySmall?.copyWith(
                                         color: themecolor.inverseSurface,
+                                        fontSize: 16,
                                       ),
                                     ),
                                   ),
                                   backgroundColor: themecolor.inversePrimary,
                                   elevation: 5,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadiusGeometry.circular(
+                                      20,
+                                    ),
                                     side: BorderSide(
                                       width: 2,
                                       style: BorderStyle.solid,
                                     ),
                                   ),
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal: 6,
-                                  ),
+
                                   behavior: SnackBarBehavior.floating,
+                                  padding: EdgeInsets.all(10),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
                                 );
                                 SnackBar snackBar2 = SnackBar(
-                                  content: SizedBox(
-                                    width: snackBarwidth,
+                                  content: Center(
                                     child: Text(
-                                      'Removed from Favorite',
+                                      'Remove from Favorite',
                                       style: textTheme.displaySmall?.copyWith(
                                         color: themecolor.inverseSurface,
+                                        fontSize: 16,
                                       ),
                                     ),
                                   ),
                                   backgroundColor: themecolor.inversePrimary,
                                   elevation: 5,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadiusGeometry.circular(
+                                      20,
+                                    ),
                                     side: BorderSide(
                                       width: 2,
                                       style: BorderStyle.solid,
                                     ),
                                   ),
-                                  margin: const EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal: 6,
-                                  ),
+
                                   behavior: SnackBarBehavior.floating,
+                                  padding: EdgeInsets.all(10),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
                                 );
+
                                 book.isFavorite
                                     ? ScaffoldMessenger.of(
                                         context,
@@ -254,6 +257,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                                       ).showSnackBar(snackBar2);
                                 setState(() {});
                               },
+
                               label: Text(
                                 book.isFavorite
                                     ? 'Favorite'

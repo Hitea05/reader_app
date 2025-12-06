@@ -101,10 +101,13 @@ class _HomePageState extends State<SavedPage> {
                             );
 
                             SnackBar snackBar1 = SnackBar(
-                              content: Text(
-                                'Add to Favorite',
-                                style: textTheme.displaySmall?.copyWith(
-                                  color: colortheme.inverseSurface,
+                              content: Center(
+                                child: Text(
+                                  'Add to Favorite',
+                                  style: textTheme.displaySmall?.copyWith(
+                                    color: colortheme.inverseSurface,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                               backgroundColor: colortheme.inversePrimary,
@@ -116,17 +119,19 @@ class _HomePageState extends State<SavedPage> {
                                   style: BorderStyle.solid,
                                 ),
                               ),
-                              margin: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 6,
-                              ),
+
                               behavior: SnackBarBehavior.floating,
+                              padding: EdgeInsets.all(10),
+                              width: MediaQuery.of(context).size.width * 0.5,
                             );
                             SnackBar snackBar2 = SnackBar(
-                              content: Text(
-                                'Removed from Favorite',
-                                style: textTheme.displaySmall?.copyWith(
-                                  color: colortheme.inverseSurface,
+                              content: Center(
+                                child: Text(
+                                  'Remove from Favorite',
+                                  style: textTheme.displaySmall?.copyWith(
+                                    color: colortheme.inverseSurface,
+                                    fontSize: 16,
+                                  ),
                                 ),
                               ),
                               backgroundColor: colortheme.inversePrimary,
@@ -138,12 +143,12 @@ class _HomePageState extends State<SavedPage> {
                                   style: BorderStyle.solid,
                                 ),
                               ),
-                              margin: EdgeInsets.symmetric(
-                                vertical: 10,
-                                horizontal: 6,
-                              ),
+
                               behavior: SnackBarBehavior.floating,
+                              padding: EdgeInsets.all(10),
+                              width: MediaQuery.of(context).size.width * 0.5,
                             );
+
                             book.isFavorite
                                 ? ScaffoldMessenger.of(
                                     context,

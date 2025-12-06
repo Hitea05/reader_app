@@ -37,7 +37,7 @@ class _HomePageState extends State<FavoritePage> {
                             "/details",
                             arguments: BookDetailsArguments(
                               itemsbook: book,
-                              isFromSavedScreen: false,
+                              isFromSavedScreen: true,
                             ),
                           );
                         },
@@ -69,6 +69,36 @@ class _HomePageState extends State<FavoritePage> {
                                       book.id,
                                       book.isFavorite,
                                     );
+                                SnackBar snackBar = SnackBar(
+                                  content: Center(
+                                    child: Text(
+                                      'Remove from Favorite',
+                                      style: textTheme.displaySmall?.copyWith(
+                                        color: colorTheme.inverseSurface,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  backgroundColor: colorTheme.inversePrimary,
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadiusGeometry.circular(
+                                      20,
+                                    ),
+                                    side: BorderSide(
+                                      width: 2,
+                                      style: BorderStyle.solid,
+                                    ),
+                                  ),
+
+                                  behavior: SnackBarBehavior.floating,
+                                  padding: EdgeInsets.all(10),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                );
+                                ScaffoldMessenger.of(
+                                  context,
+                                ).showSnackBar(snackBar);
                                 setState(() {});
                               },
                               icon: Icon(Icons.favorite, color: Colors.red),
