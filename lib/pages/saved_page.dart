@@ -69,14 +69,31 @@ class _HomePageState extends State<SavedPage> {
                       onPressed: () async {
                         await DatabaseHelper.instance.deleteBook(book.id);
 
-                        SnackBar snackBar = SnackBar(
-                          backgroundColor: colortheme.surfaceContainerHighest,
-                          content: Text(
-                            'Book Delete',
-                            style: textTheme.displaySmall,
+                        SnackBar snackBar3 = SnackBar(
+                          content: Center(
+                            child: Text(
+                              'Book Deleted',
+                              style: textTheme.displaySmall?.copyWith(
+                                color: colortheme.inverseSurface,
+                                fontSize: 16,
+                              ),
+                            ),
                           ),
+                          backgroundColor: colortheme.inversePrimary,
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadiusGeometry.circular(20),
+                            side: BorderSide(
+                              width: 2,
+                              style: BorderStyle.solid,
+                            ),
+                          ),
+
+                          behavior: SnackBarBehavior.floating,
+                          padding: EdgeInsets.all(10),
+                          width: MediaQuery.of(context).size.width * 0.5,
                         );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar3);
                         setState(() {});
                       },
                       icon: Icon(Icons.delete),
