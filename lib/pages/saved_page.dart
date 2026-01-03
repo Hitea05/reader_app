@@ -67,34 +67,55 @@ class _HomePageState extends State<SavedPage> {
                     title: Text(book.title, style: textTheme.displayMedium),
                     trailing: IconButton(
                       onPressed: () async {
-                        await DatabaseHelper.instance.deleteBook(book.id);
+                        bool? _isComfirm = await showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('Comfrim Delete'),
+                            content: Text(
+                              'Are you sure you want to delete this book from saved list.',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, false),
+                                child: Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, true),
+                                child: Text('Comfirm'),
+                              ),
+                            ],
+                          ),
+                        );
+                        if (_isComfirm == true && context.mounted) {
+                          await DatabaseHelper.instance.deleteBook(book.id);
 
-                        SnackBar snackBar3 = SnackBar(
-                          content: Center(
-                            child: Text(
-                              'Book Deleted',
-                              style: textTheme.displaySmall?.copyWith(
-                                color: colortheme.inverseSurface,
-                                fontSize: 16,
+                          SnackBar snackBar3 = SnackBar(
+                            content: Center(
+                              child: Text(
+                                'Book Deleted',
+                                style: textTheme.displaySmall?.copyWith(
+                                  color: colortheme.inverseSurface,
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
-                          ),
-                          backgroundColor: colortheme.inversePrimary,
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadiusGeometry.circular(20),
-                            side: BorderSide(
-                              width: 2,
-                              style: BorderStyle.solid,
+                            backgroundColor: colortheme.inversePrimary,
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadiusGeometry.circular(20),
+                              side: BorderSide(
+                                width: 2,
+                                style: BorderStyle.solid,
+                              ),
                             ),
-                          ),
 
-                          behavior: SnackBarBehavior.floating,
-                          padding: EdgeInsets.all(10),
-                          width: MediaQuery.of(context).size.width * 0.5,
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar3);
-                        setState(() {});
+                            behavior: SnackBarBehavior.floating,
+                            padding: EdgeInsets.all(10),
+                            width: MediaQuery.of(context).size.width * 0.5,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar3);
+                          setState(() {});
+                        }
                       },
                       icon: Icon(Icons.delete),
                     ),

@@ -203,7 +203,7 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                                       ),
                                     ),
                                   ),
-                                  backgroundColor: themecolor.inversePrimary,
+                                  backgroundColor: themecolor.onSurfaceVariant,
                                   elevation: 5,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadiusGeometry.circular(
@@ -277,6 +277,16 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
                                       .insert(book);
                                   SnackBar snackBar = SnackBar(
                                     content: Text("Book Saved $savedInt"),
+                                    backgroundColor: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadiusGeometry.circular(20),
+                                    ),
+                                    behavior: SnackBarBehavior.floating,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
                                   );
                                   ScaffoldMessenger.of(
                                     context,
